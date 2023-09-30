@@ -1,12 +1,12 @@
 import os
 from smtplib import SMTP
 
-MY_EMAIL = "humble.py.test@gmail.com"
-# os.environ.get("MY_EMAIL")
-EMAIL_PASS = "pichzghjixicxlfy"
+MY_EMAIL = os.environ.get("MY_EMAIL")
+
+EMAIL_PASS = os.environ.get("EMAIL_PASS")
 
 
-# os.environ.get("EMAIL_PASS")
+
 
 def reply_email(email, name):
     with SMTP("smtp.gmail.com") as connection:
