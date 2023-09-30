@@ -1,0 +1,47 @@
+{% from 'bootstrap5/form.html' import render_form, render_field %}
+{% block content %}
+{% include "header.html" %}
+
+
+<!-- Page Header -->
+<header
+  class="masthead"
+  style="background-image: url('../static/assets/img/login.jpg')"
+>
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="page-heading">
+          <!-- TODO: LOG IN -->
+            <h1>LOG IN</h1>
+          <span class="subheading"
+            >You're going to make a great blog post!</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="mb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <!-- TODO:Render the form here -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <p class=flashes style="font-weight: bold;color:#EB1D36">{{ message }}</p>
+            {% endfor %}
+         {% endif %}
+        {% endwith %}
+        {%if not logged_in%}
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+        {%else%}
+        <p class="title" style="color:#EB1D36; font-weight: bold; text-align:center"> You are already logged in</p>
+        {%endif%}
+      </div>
+    </div>
+  </div>
+</main>
+{% include "footer.html" %} {% endblock %}

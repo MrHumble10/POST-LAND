@@ -1,0 +1,95 @@
+{% from 'bootstrap5/form.html' import render_form %}
+{% block content %}
+{% include "header.html" %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{{post.img_url}}')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-12 col-lg-8 col-xl-7">
+        <div class="post-heading">
+          <h1>{{ post.title }}</h1>
+          <h2 class="subheading">{{ post.subtitle }}</h2>
+          <span class="meta"
+            >Posted by
+            <a href="#">{{ post.author.name }}</a>
+            on {{ post.date }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Post Content -->
+<article>
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-12 col-sm-12  col-lg-10">
+        {{ post.body|safe }}
+
+
+        {%if current_user.id == 1:%}
+        <div class="d-flex justify-content-end mb-4">
+          <!-- TODO: Editing posts-->
+          <a
+            class="btn btn-primary float-right"
+            href="{{url_for('edit_post', post_id=post.id)}}"
+            >Edit Post</a
+          >
+        </div>
+        {%else%}
+        <!-- TODO:-Add CKEditor and render the form here -->
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+        {%endif%}
+        <section style="background-color: white;">
+          <div class="container my-5 py-5 text-dark">
+            <div class="row d-flex justify-content-center ">
+              <div class="col-sm-8 col-md-7 col-lg-6 col-xl-5">
+
+                {%for comment in post.comments%}
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="d-flex flex-start">
+                      <img class="rounded-circle shadow-1-strong me-3" src="{{comment.author_comment.email | gravatar}}" alt="avatar" width="40" height="40">
+                      <div class="w-100">
+                        <div class="d-flex justify-content-between align-items-center mb-0">
+                          <h6 class="text-primary fw-bold mb-0 ">
+                            {{comment.author_comment.name}}
+                            <i class="small mb-0 px-2" style=" text-align: right ;color: #aaa;">
+                              {%if number_of_days(comment.date, today) == 0%}
+                              Today
+                              {%else%}
+                              {{number_of_days(comment.date, today)}} day(s) ago
+                              {%endif%}
+                            </i>
+                          </h6>
+
+                        </div>
+                        <span class="fs-6">
+                          {{comment.comment|safe}}
+                          {%if current_user.id == 1 or current_user.id == comment.author_id%}
+                            <a href="{{url_for('del_comment', comment_id=comment.id)}}" class="link-grey">Remove</a> •
+                            {%endif%}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {%endfor%}
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+
+  </div>
+</article>
+
+{% include "footer.html" %} {%endblock%}
