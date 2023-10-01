@@ -310,7 +310,7 @@ def send_mail(user_name, user_email, tel, msg):
                                 f"Message:\n\n"
                                 f"{msg}"
                             )
-        reply_email(user_email, user_name)
+        return reply_email(user_email, user_name)
 
 
 # <-----------------------------COMMENT SECTOR--------------------------------------->
