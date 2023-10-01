@@ -281,20 +281,18 @@ def logout():
 
 # <-----------------------------SENDING EMAIL--------------------------------------->
 
-def reply_email(email, name):
-    with SMTP("smtp.gmail.com") as connection:
-
-        connection.starttls()
-        connection.login(user=MY_EMAIL, password=EMAIL_PASS)
-        connection.sendmail(from_addr=MY_EMAIL,
-                            to_addrs=email,
-                            msg=f"Subject:Reply From POST LAND\n\n"
-                                f"Dear {name}\n\n"
-                                f"We have just received your Message."
-                                f" We will response as soon as possible"
-                            )
-
-        print(connection)
+# def reply_email(email, name):
+#     with SMTP("smtp.gmail.com") as connection:
+#
+#         connection.starttls()
+#         connection.login(user=MY_EMAIL, password=EMAIL_PASS)
+#         connection.sendmail(from_addr=MY_EMAIL,
+#                             to_addrs=email,
+#                             msg=f"Subject:Reply From POST LAND\n\n"
+#                                 f"Dear {name}\n\n"
+#                                 f"We have just received your Message."
+#                                 f" We will response as soon as possible"
+#                             )
 
 
 def send_mail(user_name, user_email, tel, msg):
@@ -310,7 +308,7 @@ def send_mail(user_name, user_email, tel, msg):
                                 f"Message:\n\n"
                                 f"{msg}"
                             )
-        return reply_email(user_email, user_name)
+        # reply_email(user_email, user_name)
 
 
 # <-----------------------------COMMENT SECTOR--------------------------------------->
