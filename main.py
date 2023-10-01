@@ -38,7 +38,6 @@ ckeditor = CKEditor(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 MY_EMAIL = os.environ.get("MY_EMAIL")
 EMAIL_PASS = os.environ.get("EMAIL_PASS")
 
@@ -88,7 +87,6 @@ class Comment(db.Model):
 
 with app.app_context():
     db.create_all()
-
 
 
 # Create admin-only decorator
@@ -267,9 +265,13 @@ def contact():
         return redirect(url_for("get_all_posts"))
     else:
         if request.method == "POST":
-            print(request.form["name"])
-            send_mail(request.form["name"], request.form["email"], request.form["phone"], request.form["message"])
-
+            if send_mail(request.form["name"],
+                         request.form["email"],
+                         request.form["phone"],
+                         request.form["message"]):
+                msg_sent = True
+                reply_email(request.form["email"], request.form["name"])
+                return render_template("contact.html", logged_in=current_user.is_authenticated, msg_sent=msg_sent)
     return render_template("contact.html", logged_in=current_user.is_authenticated)
 
 
@@ -281,18 +283,17 @@ def logout():
 
 # <-----------------------------SENDING EMAIL--------------------------------------->
 
-# def reply_email(email, name):
-#     with SMTP("smtp.gmail.com") as connection:
-#
-#         connection.starttls()
-#         connection.login(user=MY_EMAIL, password=EMAIL_PASS)
-#         connection.sendmail(from_addr=MY_EMAIL,
-#                             to_addrs=email,
-#                             msg=f"Subject:Reply From POST LAND\n\n"
-#                                 f"Dear {name}\n\n"
-#                                 f"We have just received your Message."
-#                                 f" We will response as soon as possible"
-#                             )
+def reply_email(email, name):
+    with SMTP("smtp.gmail.com") as connection:
+        connection.starttls()
+        connection.login(user=MY_EMAIL, password=EMAIL_PASS)
+        connection.sendmail(from_addr=MY_EMAIL,
+                            to_addrs=email,
+                            msg=f"Subject:Reply From POST LAND\n\n"
+                                f"Dear {name}\n\n"
+                                f"We have just received your Message."
+                                f" We will response as soon as possible"
+                            )
 
 
 def send_mail(user_name, user_email, tel, msg):
@@ -355,7 +356,6 @@ def del_comment(comment_id):
     db.session.delete(comment_to_delete)
     db.session.commit()
     return redirect(f"{comment_to_delete.post_id}")
-
 
 
 if __name__ == "__main__":
