@@ -2,14 +2,15 @@ from flask import Flask, render_template, redirect, url_for, request, flash, abo
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_ckeditor import CKEditor
+from datetime import date
 import datetime as dt
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import PostForm, RegisterForm, LoginForm, CommentForm
 from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user
 from functools import wraps
 from flask_gravatar import Gravatar
+from notifications import send_email
 import os
-from smtplib import SMTP
 
 '''
 Make sure the required packages are installed: 
@@ -37,9 +38,6 @@ ckeditor = CKEditor(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-
-MY_EMAIL = os.environ.get("MY_EMAIL")
-EMAIL_PASS = os.environ.get("EMAIL_PASS")
 
 
 @login_manager.user_loader
@@ -87,6 +85,7 @@ class Comment(db.Model):
 
 with app.app_context():
     db.create_all()
+
 
 
 # Create admin-only decorator
@@ -265,13 +264,9 @@ def contact():
         return redirect(url_for("get_all_posts"))
     else:
         if request.method == "POST":
-            if send_mail(request.form["name"],
-                         request.form["email"],
-                         request.form["phone"],
-                         request.form["message"]):
-                msg_sent = True
-                reply_email(request.form["email"], request.form["name"])
-                return render_template("contact.html", logged_in=current_user.is_authenticated, msg_sent=msg_sent)
+            print(request.form["name"])
+            send_email(request.form["name"], request.form["email"], request.form["phone"], request.form["message"])
+
     return render_template("contact.html", logged_in=current_user.is_authenticated)
 
 
@@ -279,37 +274,6 @@ def contact():
 def logout():
     logout_user()
     return redirect(url_for('get_all_posts'))
-
-
-# <-----------------------------SENDING EMAIL--------------------------------------->
-
-def reply_email(email, name):
-    with SMTP("smtp.gmail.com") as connection:
-        connection.starttls()
-        connection.login(user=MY_EMAIL, password=EMAIL_PASS)
-        connection.sendmail(from_addr=MY_EMAIL,
-                            to_addrs=email,
-                            msg=f"Subject:Reply From POST LAND\n\n"
-                                f"Dear {name}\n\n"
-                                f"We have just received your Message."
-                                f" We will response as soon as possible"
-                            )
-
-
-def send_mail(user_name, user_email, tel, msg):
-    with SMTP("smtp.gmail.com") as connection:
-        connection.starttls()
-        connection.login(user=MY_EMAIL, password=EMAIL_PASS)
-        connection.sendmail(from_addr=user_email,
-                            to_addrs=MY_EMAIL,
-                            msg=f"Subject:New contact from POST LAND\n\n"
-                                f"Name: {user_name}\n\n"
-                                f"Email: {user_email}\n\n"
-                                f"Phone: {tel}\n\n"
-                                f"Message:\n\n"
-                                f"{msg}"
-                            )
-        # reply_email(user_email, user_name)
 
 
 # <-----------------------------COMMENT SECTOR--------------------------------------->
@@ -356,6 +320,7 @@ def del_comment(comment_id):
     db.session.delete(comment_to_delete)
     db.session.commit()
     return redirect(f"{comment_to_delete.post_id}")
+
 
 
 if __name__ == "__main__":
