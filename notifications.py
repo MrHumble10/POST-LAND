@@ -25,9 +25,9 @@ def reply_email(email, name):
 
 
 def send_email(user_name, user_email, tel, msg):
-    with SMTP("smtp.gmail.com") as connection:
+    with SMTP("smtp.gmail.com", port=443) as connection:
         connection.starttls()
-        connection.login(user=MY_EMAIL, password=EMAIL_PASS)
+        connection.login(user=MY_EMAIL, password=EMAIL_PASS, initial_response_ok=True)
         connection.sendmail(from_addr=user_email,
                             to_addrs=MY_EMAIL,
                             msg=f"Subject:New contact from POST LAND\n\n"
