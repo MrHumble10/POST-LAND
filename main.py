@@ -1,3 +1,4 @@
+from __future__ import print_function
 from flask import Flask, render_template, redirect, url_for, request, flash, abort
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
@@ -9,8 +10,8 @@ from forms import PostForm, RegisterForm, LoginForm, CommentForm
 from flask_login import UserMixin, LoginManager, login_user, current_user, logout_user
 from functools import wraps
 from flask_gravatar import Gravatar
-from notifications import send_email
 import os
+from notifications import send_email
 
 '''
 Make sure the required packages are installed: 
