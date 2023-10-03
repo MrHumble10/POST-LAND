@@ -267,6 +267,7 @@ def contact():
         if request.method == "POST":
             print(request.form["name"])
             send_email(request.form["name"], request.form["email"], request.form["phone"], request.form["message"])
+            return render_template("contact.html", logged_in=current_user.is_authenticated, msg_sent=True)
 
     return render_template("contact.html", logged_in=current_user.is_authenticated)
 

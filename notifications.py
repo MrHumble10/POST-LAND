@@ -20,8 +20,8 @@ def send_email(user_name, user_email, tel, msg):
                     }
                 ],
                 "Subject": "NEW POSTLAND MESSAGE!",
-                "TextPart": f"User Information!\n\nNAME: {user_name}\n\nEMAIL: {user_email}\n\nTell: {tel}",
-                "HTMLPart": f"<p>{msg}</p>"
+                "TextPart": f"User Information!\n\nNAME: {user_name}\n\nEMAIL: {user_email}\n\nTell: {tel}\n\n{msg}",
+                "HTMLPart": ""
             }
         ]
     }
