@@ -54,4 +54,4 @@ def send_email(user_name, user_email, tel, msg):
     result = mailjet.send.create(data=data)
     print(result.status_code)
     print(result.json())
-    reply_mail(user_email, user_name)
+    reply_mail(name=user_name, email=user_email)
