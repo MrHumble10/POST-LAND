@@ -47,7 +47,7 @@
           <a href="#">{{post.author.name}}</a>
           on {{post.date}}
           {%if current_user.id == 1:%}
-          <a href="{{url_for('delete', post_id=post.id)}}">❌</a>
+          <a href="{{url_for('delete', post_id=post.id)}}" title="Delete the post.">❌</a>
           {%endif%}
         </p>
 
