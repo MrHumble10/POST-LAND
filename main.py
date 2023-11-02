@@ -358,8 +358,8 @@ def morse():
             p = from_morse(request.form['message'])
         else:
             p = to_morse(request.form['message'])
-        return render_template("morse.html", f=p)
-    return render_template("morse.html")
+        return render_template("morse.html", f=p, logged_in=current_user.is_authenticated)
+    return render_template("morse.html", logged_in=current_user.is_authenticated)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
