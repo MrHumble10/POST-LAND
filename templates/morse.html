@@ -9,6 +9,13 @@
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
         <div class="page-heading">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <p class=flashes style="font-weight: bold;color:#EB1D36">{{ message }}</p>
+              {% endfor %}
+           {% endif %}
+          {% endwith %}
           <h1 >Morse Code</h1>
           <span class="subheading ">You can translate To/From Morse code here.</span>
         </div>
@@ -32,6 +39,7 @@
             method="post"
           >
             <div class="form-check form-check-inline ">
+    <!-- Button to launch a modal -->
               <input required class="form-check-input" type="radio" value="to_morse" name="p" id="flexRadioDefault1">
               <label class="form-check-label fs-6 text-primary" for="flexRadioDefault1">
                 To Morse
@@ -45,15 +53,47 @@
                 From Morse
               </label>
             </div>
+            <!-- Button to launch a modal -->
+            <button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-link fs-6 px-4 ">
+              Morse source
+            </button>
+            <!-- Modal -->
+            <div class="modal modal-lg fade"
+                id="exampleModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <!-- Add image inside the body of modal -->
+                        <div class="modal-body ">
+                            <img class="container" id="image"
+                                src="../static/assets/img/morse_source.jpg"
+                                alt="Click on button" />
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <br />
             <div class="form-floating">
+
               <textarea
-                      type="text"
-                class="form-control text-danger"
+                type="text"
+                class=" form-control text-danger "
                 name="message"
                 placeholder="Enter your message here..."
                 required
-                style="height: 12rem"
+                style="height: 6rem"
 
               ></textarea>
               <br />
@@ -74,7 +114,7 @@
               type="submit"
 
             >
-              NOT USED in Day 67
+              Translate
             </button>
           </form>
         </div>
@@ -82,5 +122,4 @@
     </div>
   </div>
 </main>
-
 {% include "footer.html" %}
