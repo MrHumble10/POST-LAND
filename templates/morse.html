@@ -1,0 +1,86 @@
+{% include "header.html" %}
+
+<!-- Page Header-->
+<header
+  class="masthead"
+  style="background-image: url('../static/assets/img/mrs.jpg')"
+>
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="page-heading">
+          <h1 >Morse Code</h1>
+          <span class="subheading ">You can translate To/From Morse code here.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- Main Content-->
+<main class="mb-4">
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+
+        <div class="my-5">
+          <!-- * * * * * * * * * * * * * * *-->
+          <!-- * * Simplified SB Contact Form for the Tutorial* *-->
+          <form
+            id="translateform"
+            name="translate"
+            action="{{ url_for('morse') }}"
+            method="post"
+          >
+            <div class="form-check form-check-inline ">
+              <input required class="form-check-input" type="radio" value="to_morse" name="p" id="flexRadioDefault1">
+              <label class="form-check-label fs-6 text-primary" for="flexRadioDefault1">
+                To Morse
+              </label>
+
+
+            </div>
+            <div class="form-check form-check-inline ">
+              <input required class="form-check-input " type="radio" value="from_morse" name="p" id="flexRadioDefault2">
+              <label class="form-check-label fs-6 text-primary" for="flexRadioDefault2">
+                From Morse
+              </label>
+            </div>
+            <br />
+            <div class="form-floating">
+              <textarea
+                      type="text"
+                class="form-control text-danger"
+                name="message"
+                placeholder="Enter your message here..."
+                required
+                style="height: 12rem"
+
+              ></textarea>
+              <br />
+              <div style="text-align:center">
+                <textarea
+                        readonly
+                      class="form-control text-danger"
+                      style="height: 12rem"
+                >{{f}}</textarea>
+                </div>
+
+            </div>
+            <br />
+
+            <button
+              class="btn btn-danger text-uppercase"
+              id="submitButton"
+              type="submit"
+
+            >
+              NOT USED in Day 67
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% include "footer.html" %}

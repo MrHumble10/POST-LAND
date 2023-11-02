@@ -323,7 +323,43 @@ def del_comment(comment_id):
     db.session.commit()
     return redirect(f"{comment_to_delete.post_id}")
 
+# ------------------------------MORSE CODE----------------------------------------->
 
+CODE = {
+    'A': '.-', 'B': '-...', 'C': '-.-.',
+    'D': '-..', 'E': '.', 'F': '..-.',
+    'G': '--.', 'H': '....', 'I': '..',
+    'J': '.---', 'K': '-.-', 'L': '.-..',
+    'M': '--', 'N': '-.', 'O': '---',
+    'P': '.--.', 'Q': '--.-', 'R': '.-.',
+    'S': '...', 'T': '-', 'U': '..-',
+    'V': '...-', 'W': '.--', 'X': '-..-',
+    'Y': '-.--', 'Z': '--..', '1': '.----',
+    '2': '..---', '3': '...--', '4': '....-',
+    '5': '.....', '6': '-....', '7': '--...',
+    '8': '---..', '9': '----.', '0': '-----',
+    ' ': '/'
+}
+
+CODE_REVERSED = {value: key for (key, value) in CODE.items()}
+
+
+def to_morse(s):
+    return ' '.join(CODE.get(i.upper()) for i in s)
+
+
+def from_morse(s):
+    return ''.join(CODE_REVERSED.get(i) for i in s.split())
+
+@app.route('/morse', methods=['GET', "POST"])
+def morse():
+    if request.method == 'POST':
+        if request.form['p'] == 'from_morse':
+            p = from_morse(request.form['message'])
+        else:
+            p = to_morse(request.form['message'])
+        return render_template("morse.html", f=p)
+    return render_template("morse.html")
 
 if __name__ == "__main__":
     app.run(debug=True, port=5003)
