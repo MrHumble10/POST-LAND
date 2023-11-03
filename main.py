@@ -353,14 +353,16 @@ def from_morse(s):
 
 @app.route('/morse', methods=['GET', "POST"])
 def morse():
-    is_login = current_user.is_authenticated
-    if is_login:
-        if request.method == 'POST':
-            if request.form['p'] == 'from_morse':
-                p = from_morse(request.form['message'])
-            else:
-                p = to_morse(request.form['message'])
-            return render_template("morse.html", f=p, logged_in=current_user.is_authenticated)
+    logged_in = current_user.is_authenticated
+    if not logged_in:
+        flash("To enjoy the entertainments please log in.")
+        return redirect(url_for("get_all_posts"))
+    elif request.method == 'POST':
+        if request.form['p'] == 'from_morse':
+            p = from_morse(request.form['message'])
+        else:
+            p = to_morse(request.form['message'])
+        return render_template("morse.html", f=p, logged_in=current_user.is_authenticated)
     return render_template("morse.html", logged_in=current_user.is_authenticated)
 
 if __name__ == "__main__":
